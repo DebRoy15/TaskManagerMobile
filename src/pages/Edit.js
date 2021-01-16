@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StatusBar,
   StyleSheet,
@@ -9,14 +9,13 @@ import {
   TouchableHighlight,
 } from "react-native";
 
-const Create = (props) => {
+const Edit = (props) => {
   const [formState, setFormState] = useState({
-    id: `${new Date().getTime()}_${Math.random() * 20}`,
+    id: "",
     title: "",
     description: "",
-    status: "initiated",
+    status: "",
   });
-
   const styles = StyleSheet.create({
     home: {
       flex: 1,
@@ -74,7 +73,7 @@ const Create = (props) => {
       borderColor: "#d1d1d1",
       borderWidth: 1,
       borderRadius: 5,
-      height: "37%",
+      height: "35%",
       textAlignVertical: "top",
     },
     submitButton: {
@@ -94,7 +93,42 @@ const Create = (props) => {
       width: "75%",
       marginBottom: 10,
     },
+    statusBtn1: {
+      padding: 5,
+      marginBottom: 10,
+      borderColor: "#d1d1d1",
+      borderWidth: 1,
+      borderRadius: 5,
+      backgroundColor: formState.status == "completed" ? "#38bc1c" : "white",
+    },
+    statusBtn2: {
+      padding: 5,
+      marginBottom: 10,
+      borderColor: "#d1d1d1",
+      borderWidth: 1,
+      borderRadius: 5,
+      backgroundColor: formState.status == "initiated" ? "yellow" : "white",
+    },
+    statusBtn3: {
+      padding: 5,
+      marginBottom: 10,
+      borderColor: "#d1d1d1",
+      borderWidth: 1,
+      borderRadius: 5,
+      backgroundColor: formState.status == "running" ? "#00ccff" : "white",
+    },
   });
+
+  useEffect(() => {
+    const task = props.currentTasks.filter((task) => {
+      return task.id === props.activeTask;
+    })[0];
+    setFormState(task);
+  }, []);
+
+  const handleGoBack = () => {
+    props.setCurrentRoute("Home");
+  };
 
   const handleChange = (name, text) => {
     const newState = Object.assign({}, formState, {
@@ -104,14 +138,15 @@ const Create = (props) => {
   };
 
   const onSubmit = () => {
-    let newTasks = [...props.currentTasks, formState];
+    let taskIndex = props.currentTasks.findIndex(
+      (task) => task.id === props.activeTask
+    );
+    let newTasks = [...props.currentTasks];
+    newTasks.splice(taskIndex, 1, formState);
     props.setCurrentTasks(newTasks);
     props.setCurrentRoute("Home");
   };
 
-  const handleGoBack = () => {
-    props.setCurrentRoute("Home");
-  };
   return (
     <View style={styles.home}>
       <StatusBar backgroundColor="#221040" barStyle="light-content" />
@@ -126,7 +161,7 @@ const Create = (props) => {
       </View>
       <View style={styles.formContainer}>
         <View style={styles.container}>
-          <Text style={styles.sectionTitle}>Create Task</Text>
+          <Text style={styles.sectionTitle}>Edit Task</Text>
           <Text style={styles.label}>Title</Text>
           <TextInput
             style={styles.textInput}
@@ -142,7 +177,30 @@ const Create = (props) => {
             value={formState.description}
             onChangeText={(text) => handleChange("description", text)}
           />
-
+          <Text style={styles.label}>Status</Text>
+          <View style={styles.statusSection}>
+            <TouchableHighlight
+              style={styles.statusBtn1}
+              onPress={() => handleChange("status", "completed")}
+              underlayColor="white"
+            >
+              <Text style={styles.statusButtonText}>Completed</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.statusBtn2}
+              onPress={() => handleChange("status", "initiated")}
+              underlayColor="white"
+            >
+              <Text style={styles.statusButtonText}>Initiated</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.statusBtn3}
+              onPress={() => handleChange("status", "running")}
+              underlayColor="white"
+            >
+              <Text style={styles.statusButtonText}>Started</Text>
+            </TouchableHighlight>
+          </View>
           <TouchableHighlight onPress={onSubmit} style={styles.submitButton}>
             <Text style={styles.submitText}>Save</Text>
           </TouchableHighlight>
@@ -152,4 +210,4 @@ const Create = (props) => {
   );
 };
 
-export default Create;
+export default Edit;

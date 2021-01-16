@@ -1,7 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const StatusCard = () => {
+const StatusCard = (props) => {
+  const totalCompleted = (type) => {
+    let number = props.currentTasks.filter((task) => task.status === type);
+
+    number = number.length;
+    return number;
+  };
   return (
     <View style={styles.statusCard}>
       <View style={styles.column}>
@@ -10,27 +16,27 @@ const StatusCard = () => {
             <Text style={styles.title}>Completed</Text>
           </View>
           <View style={styles.numberContainer}>
-            <Text style={styles.number}>100</Text>
+            <Text style={styles.number}>{totalCompleted("completed")}</Text>
           </View>
         </View>
       </View>
       <View style={styles.column}>
         <View style={styles.cardInprogress}>
           <View>
-            <Text style={styles.title}>Completed</Text>
+            <Text style={styles.title}>Initiated</Text>
           </View>
           <View style={styles.numberContainer}>
-            <Text style={styles.number}>100</Text>
+            <Text style={styles.number}>{totalCompleted("initiated")}</Text>
           </View>
         </View>
       </View>
       <View style={styles.column}>
         <View style={styles.cardDeleted}>
           <View>
-            <Text style={styles.title}>Completed</Text>
+            <Text style={styles.title}>Started</Text>
           </View>
           <View style={styles.numberContainer}>
-            <Text style={styles.number}>100</Text>
+            <Text style={styles.number}>{totalCompleted("running")}</Text>
           </View>
         </View>
       </View>

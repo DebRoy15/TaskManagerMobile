@@ -10,18 +10,29 @@ import Header from "../components/Header";
 import StatusCard from "../components/StatusCard";
 import Tasks from "../components/Tasks";
 
-const Home = () => {
+const Home = (props) => {
+  const handleAddTask = () => {
+    // props.setActiveTask(id);
+    props.setCurrentRoute("Create");
+  };
   return (
     <View style={styles.home}>
       <StatusBar backgroundColor="#221040" barStyle="light-content" />
       <View style={styles.top}>
         <View style={styles.container}>
           <Header />
-          <StatusCard />
+          <StatusCard currentTasks={props.currentTasks} />
         </View>
       </View>
-      <Tasks />
-      <TouchableOpacity style={styles.addTaskBtn}>
+      <Tasks
+        currentRoute={props.currentRoute}
+        setCurrentRoute={props.setCurrentRoute}
+        currentTasks={props.currentTasks}
+        setCurrentTasks={props.setCurrentTasks}
+        activeTask={props.activeTask}
+        setActiveTask={props.setActiveTask}
+      />
+      <TouchableOpacity onPress={handleAddTask} style={styles.addTaskBtn}>
         <Text style={styles.plus}>+</Text>
       </TouchableOpacity>
     </View>

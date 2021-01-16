@@ -1,35 +1,34 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from "react-native";
 
-const Tasks = () => {
-  const tasks = [
-    {
-      id: `${new Date().getTime()}_${Math.random() * 20}`,
-      title: `Clean Your Car`,
-    },
-    {
-      id: `${new Date().getTime()}_${Math.random() * 20}`,
-      title: `Finish Work on project`,
-    },
-    {
-      id: `${new Date().getTime()}_${Math.random() * 20}`,
-      title: `Go to Gym`,
-    },
-  ];
-  const showTask = () => {
-    return tasks.map((task) => {
-      return (
-        <View key={task.id} style={styles.task}>
-          <Text style={styles.taskTitle}>{task.title}</Text>
-        </View>
-      );
-    });
+const Tasks = (props) => {
+  const handleTaskClick = (id) => {
+    props.setActiveTask(id);
+    props.setCurrentRoute("Edit");
   };
   return (
     <View style={styles.tasks}>
       <View style={styles.container}>
         <Text style={styles.sectionTitle}>Tasks</Text>
-        {showTask()}
+        <ScrollView>
+          {props.currentTasks.map((task) => {
+            return (
+              <TouchableHighlight
+                onPress={handleTaskClick.bind(null, task.id)}
+                key={task.id}
+                style={styles.task}
+              >
+                <Text style={styles.taskTitle}>{task.title}</Text>
+              </TouchableHighlight>
+            );
+          })}
+        </ScrollView>
       </View>
     </View>
   );
