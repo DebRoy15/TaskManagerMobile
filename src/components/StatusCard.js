@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   column: {
     flex: 1,
     padding: 5,
-    height: 150,
+    height: 120,
     // backgroundColor: "white",
   },
   cardComplete: {

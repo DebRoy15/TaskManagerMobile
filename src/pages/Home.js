@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Header from "../components/Header";
 import StatusCard from "../components/StatusCard";
+import Tasks from "../components/Tasks";
 
 const Home = () => {
   return (
@@ -19,6 +20,7 @@ const Home = () => {
           <StatusCard />
         </View>
       </View>
+      <Tasks />
       <TouchableOpacity style={styles.addTaskBtn}>
         <Text style={styles.plus}>+</Text>
       </TouchableOpacity>
